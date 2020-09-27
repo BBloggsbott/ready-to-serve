@@ -42,3 +42,6 @@ out/
 *.iml
 *.ipr
 *.iws
+
+# Ready To Serve
+settings.json

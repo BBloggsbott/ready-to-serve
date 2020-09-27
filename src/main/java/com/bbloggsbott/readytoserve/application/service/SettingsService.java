@@ -64,4 +64,7 @@ public class SettingsService {
         settings.setPagesDir(Paths.get(settings.getBaseDir(), settings.getPagesDir()).toString());
     }
 
+    public SettingsDTO getSettings() {
+        return settings;
+    }
 }

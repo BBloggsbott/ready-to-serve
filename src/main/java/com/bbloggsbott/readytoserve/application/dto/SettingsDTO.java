@@ -12,10 +12,10 @@ public class SettingsDTO {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("based_dir")
+    @JsonProperty("base_directory")
     private String baseDir;
 
-    @JsonProperty("data_dir")
+    @JsonProperty("data_directory")
     private String dataDir;
 
     @JsonProperty("navigation_file")
@@ -28,7 +28,7 @@ public class SettingsDTO {
     private String serverImageUrl;
 
     @JsonProperty("server_image_size") // Works only with image from gravatar
-    private Integer serverImageSize;
+    private String serverImageSize;
 
     @JsonProperty("files_directory")
     private String filesDir;
