@@ -58,7 +58,6 @@ public class SettingsService {
             settings.setBaseDir(System.getProperty("user.dir"));
         }
         settings.setDataDir(Paths.get(settings.getBaseDir(), settings.getDataDir()).toString());
-        settings.setNavigationFile(Paths.get(settings.getDataDir(), settings.getNavigationFile()).toString());
         settings.setServerInfoFile(Paths.get(settings.getDataDir(), settings.getServerInfoFile()).toString());
         settings.setFilesDir(Paths.get(settings.getBaseDir(), settings.getFilesDir()).toString());
         settings.setPagesDir(Paths.get(settings.getBaseDir(), settings.getPagesDir()).toString());

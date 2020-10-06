@@ -18,9 +18,6 @@ public class SettingsDTO {
     @JsonProperty("data_directory")
     private String dataDir;
 
-    @JsonProperty("navigation_file")
-    private String navigationFile;
-
     @JsonProperty("server_info_file")
     private String serverInfoFile;
 
