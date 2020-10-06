@@ -45,4 +45,5 @@ out/
 
 # Ready To Serve
 settings.json
-./pages/data/
+./pages/
+./data/
