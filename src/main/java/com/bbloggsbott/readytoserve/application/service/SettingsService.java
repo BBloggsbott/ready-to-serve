@@ -61,6 +61,7 @@ public class SettingsService {
         settings.setServerInfoFile(Paths.get(settings.getDataDir(), settings.getServerInfoFile()).toString());
         settings.setFilesDir(Paths.get(settings.getBaseDir(), settings.getFilesDir()).toString());
         settings.setPagesDir(Paths.get(settings.getBaseDir(), settings.getPagesDir()).toString());
+        settings.setPluginsConfigFile(Paths.get(settings.getPluginsDirectory(), settings.getPluginsConfigFile()).toString());
     }
 
     public SettingsDTO getSettings() {

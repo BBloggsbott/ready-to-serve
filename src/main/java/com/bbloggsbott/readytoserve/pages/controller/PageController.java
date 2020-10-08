@@ -23,9 +23,4 @@ public class PageController {
         return pageService.getBasePaths();
     }
 
-    @GetMapping("/**")
-    public PageResponseDTO getPage(HttpServletRequest request) throws ParseException, PageNotFoundException, IOException {
-        return pageService.getPageResponse(request.getRequestURI());
-    }
-
 }
