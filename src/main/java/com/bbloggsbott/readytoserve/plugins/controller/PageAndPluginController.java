@@ -3,13 +3,16 @@ package com.bbloggsbott.readytoserve.plugins.controller;
 import com.bbloggsbott.readytoserve.pages.dto.PageResponseDTO;
 import com.bbloggsbott.readytoserve.pages.exception.PageNotFoundException;
 import com.bbloggsbott.readytoserve.pages.service.PageService;
+import com.bbloggsbott.readytoserve.plugins.exception.PluginRequestMethodNotAllowed;
 import com.bbloggsbott.readytoserve.plugins.service.PluginService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Slf4j
 public class PageAndPluginController {
 
     @Autowired
@@ -29,12 +33,11 @@ public class PageAndPluginController {
     @Autowired
     private PluginService pluginService;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @GetMapping("/**")
-    public ResponseEntity getPage(HttpServletRequest request, @RequestParam Map<String, Object> requestParams) throws ParseException, PageNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        logger.info("Got request to {}, param: {}", request.getRequestURL(), requestParams);
-        Object response = pluginService.getResponse(request.getRequestURI(), requestParams, new HashMap<>());
+    @RequestMapping("/**")
+    public ResponseEntity getPage(HttpServletRequest request, @RequestParam Map<String, Object> requestParams, @RequestBody Map<String, Object> requestBody) throws ParseException, PageNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException, PluginRequestMethodNotAllowed {
+        log.info("Got {} request to {}, param: {}", request.getMethod(), request.getRequestURL(), requestParams);
+        Object response = pluginService.getResponse(request.getRequestURI(), requestParams, requestBody, request.getMethod());
         if (response != null){
             return new ResponseEntity<Object>(response, HttpStatus.OK);
         }

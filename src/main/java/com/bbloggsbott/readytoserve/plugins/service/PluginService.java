@@ -4,6 +4,7 @@ import com.bbloggsbott.readytoserve.application.service.SettingsService;
 import com.bbloggsbott.readytoserve.plugins.dto.PluginArgDTO;
 import com.bbloggsbott.readytoserve.plugins.dto.PluginDTO;
 import com.bbloggsbott.readytoserve.plugins.dto.PluginsDTO;
+import com.bbloggsbott.readytoserve.plugins.exception.PluginRequestMethodNotAllowed;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -90,13 +92,16 @@ public class PluginService {
         enpointPluginMapping.put(StringUtils.strip(plugin.getEndpoint(), "/"), pluginMap);
     }
 
-    public Object getResponse(String endpoint, Map<String, Object> requestParams, Map<String, Object> requestBody) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException, JsonProcessingException {
+    public Object getResponse(String endpoint, Map<String, Object> requestParams, Map<String, Object> requestBody, String requestMethod) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException, JsonProcessingException, PluginRequestMethodNotAllowed {
         String cleanedEndpoint = StringUtils.strip(endpoint, "/");
         if (enpointPluginMapping.containsKey(cleanedEndpoint)){
             HashMap<String, Object> map = enpointPluginMapping.get(cleanedEndpoint);
             Class loadedClass = (Class) map.get(CLASS_KEY);
             Method method = (Method) map.get(METHOD_KEY);
             PluginDTO plugin = (PluginDTO) map.get(PLUGIN_DTO_KEY);
+            if (!plugin.getRequestType().equalsIgnoreCase(requestMethod)){
+                throw new PluginRequestMethodNotAllowed(requestMethod, endpoint);
+            }
             ArrayList<Object> params = new ArrayList<>();
             for (PluginArgDTO arg: plugin.getArgs()){
                 Class argClass = getClassFromName(arg.getType());
