@@ -58,6 +58,9 @@ public class PluginService {
         String pluginsDir = settingsService.getSettings().getPluginsDirectory();
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         File configFile = new File(settingsService.getSettings().getPluginsConfigFile());
+        if (configFile.length() == 0){
+            return;
+        }
         plugins.addAll(mapper.readValue(configFile, PluginsDTO.class));
         plugins.forEach(pluginDTO -> {
             pluginDTO.setJarfile(Paths.get(pluginsDir, pluginDTO.getJarfile()).toString());
