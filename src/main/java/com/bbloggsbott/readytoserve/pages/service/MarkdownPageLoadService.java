@@ -2,26 +2,23 @@ package com.bbloggsbott.readytoserve.pages.service;
 
 import com.bbloggsbott.readytoserve.application.service.SettingsService;
 import com.bbloggsbott.readytoserve.pages.dto.PageDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Service
+@Slf4j
 public class MarkdownPageLoadService {
 
     @Autowired
     SettingsService settingsService;
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final Parser mdParser = Parser.builder().build();
     private final HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
@@ -40,20 +37,20 @@ public class MarkdownPageLoadService {
     private final String PAGE_META_REGEX = "---\\n(.*\\n)+---";
 
     public void setPageMeta(PageDTO pageDTO) throws ParseException {
-        logger.info("Setting page meta for {}", pageDTO.getPageFilePath());
+        log.info("Setting page meta for {}", pageDTO.getPageFilePath());
         Node node = mdParser.parse(pageDTO.getContentMD());
         if (node.getFirstChild() == null || node.getFirstChild().getNext() == null){
-            logger.info("Setting default meta");
+            log.info("Setting default meta");
             setAllMetaToDefault(pageDTO);
             pageDTO.setContentHtml(htmlRenderer.render(node));
             return;
         }
         Node metaNode = node.getFirstChild().getNext();
-        logger.info("Extracting Page meta from markdown");
+        log.info("Extracting Page meta from markdown");
         List<String> metaNodeContent = Arrays.asList(htmlRenderer.render(metaNode).replaceAll("</?h2>", "").split("\n"));
         HashMap<String, String> metaMap = new HashMap<>();
         if (metaNodeContent.get(0).equalsIgnoreCase(PAGEMETA)){
-            logger.info("Meta exists. Setting meta");
+            log.info("Meta exists. Setting meta");
             for (int i=1; i < metaNodeContent.size();i++){
                 String content = metaNodeContent.get(i);
                 String[] parts = content.split(":");
@@ -67,20 +64,20 @@ public class MarkdownPageLoadService {
                 if (metaMap.containsKey(key) && metaMap.get(key) != null){
                     setPageMetaForKey(pageDTO, key, metaMap.get(key));
                 } else {
-                    logger.info("Necessary key {} is null or not found. Using default", key);
+                    log.info("Necessary key {} is null or not found. Using default", key);
                     setDefaultPageMeta(pageDTO, key);
                 }
             }
-            logger.info("Removing meta from markdown");
+            log.info("Removing meta from markdown");
             pageDTO.setContentMD(removePageMeta(pageDTO.getContentMD()));
             pageDTO.setExcerpt(removePageMeta(pageDTO.getExcerpt()));
         } else {
-            logger.info("Meta not found. Using defaults");
+            log.info("Meta not found. Using defaults");
             setAllMetaToDefault(pageDTO);
         }
-        logger.info("Creating HTML for content");
+        log.info("Creating HTML for content");
         pageDTO.setContentHtml(htmlRenderer.render(mdParser.parse(pageDTO.getContentMD())));
-        logger.info("Setting page meta for {} complete", pageDTO.getPageFilePath());
+        log.info("Setting page meta for {} complete", pageDTO.getPageFilePath());
     }
 
     private String removePageMeta(String contentMD){
@@ -105,7 +102,7 @@ public class MarkdownPageLoadService {
                 try{
                     pageDTO.setDate(dateFormat.parse(value));
                 } catch (ParseException e){
-                    logger.error("Error while parsing date {} in {}", value, pageDTO.getPageFilePath());
+                    log.error("Error while parsing date {} in {}", value, pageDTO.getPageFilePath());
                     throw e;
                 }
         }

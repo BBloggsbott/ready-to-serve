@@ -2,6 +2,7 @@ package com.bbloggsbott.readytoserve.pages.service;
 
 import com.bbloggsbott.readytoserve.application.service.SettingsService;
 import com.bbloggsbott.readytoserve.pages.dto.PageDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PagePathService {
 
     @Autowired
@@ -33,8 +35,6 @@ public class PagePathService {
 
     private final HashSet<String> basePaths = new HashSet<>();
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     public HashMap<String, HashSet<String>> getUrlDirectories(){
         return directoryPaths;
     }
@@ -48,7 +48,7 @@ public class PagePathService {
     }
 
     public List<File> setPathsInDirectoryAndGetChildDirectories(File directory) {
-        logger.info("Loading pages in {}", directory);
+        log.info("Loading pages in {}", directory);
         File[] files = directory.listFiles();
         ArrayList<File> directories = new ArrayList<>();
         for (File file: files){
@@ -58,11 +58,11 @@ public class PagePathService {
                     pageDTO.setContentMD(Files.readString(Paths.get(pageDTO.getPageFilePath())));
                     markdownPageLoadService.setPageMeta(pageDTO);
                 } catch (ParseException e) {
-                    logger.error("Error while parsing meta for {}. Skipping", pageDTO.getPageFilePath());
+                    log.error("Error while parsing meta for {}. Skipping", pageDTO.getPageFilePath());
                     e.printStackTrace();
                     continue;
                 } catch (IOException e){
-                    logger.error("Error while reading file {}. Skipping", pageDTO.getPageFilePath());
+                    log.error("Error while reading file {}. Skipping", pageDTO.getPageFilePath());
                     e.printStackTrace();
                     continue;
                 }
@@ -76,7 +76,7 @@ public class PagePathService {
     }
 
     private void makePageDirectoryEntry(PageDTO pageDTO){
-        logger.info("Creating Entries for child paths");
+        log.info("Creating Entries for child paths");
         String[] paths = StringUtils.strip(pageDTO.getUrlPath(), "/").strip().split("/");
         ArrayList<String> relativePaths = new ArrayList<>();
 
@@ -119,16 +119,16 @@ public class PagePathService {
                 pageDTO.setContentMD(Files.readString(Paths.get(pageDTO.getPageFilePath())));
                 markdownPageLoadService.setPageMeta(pageDTO);
             } catch (ParseException e) {
-                logger.error("Error while parsing meta for {}. Skipping", pageDTO.getPageFilePath());
+                log.error("Error while parsing meta for {}. Skipping", pageDTO.getPageFilePath());
                 e.printStackTrace();
             } catch (IOException e){
-                logger.error("Error while reading file {}. Skipping", pageDTO.getPageFilePath());
+                log.error("Error while reading file {}. Skipping", pageDTO.getPageFilePath());
                 e.printStackTrace();
             }
             pagePaths.put(StringUtils.strip(pageDTO.getUrlPath(), "/"), pageDTO.getPageFilePath());
             makePageDirectoryEntry(pageDTO);
         } else {
-            logger.info("New file was neither a markdown file nor a directory");
+            log.info("New file was neither a markdown file nor a directory");
         }
         return new ArrayList<>(directories);
     }
@@ -167,7 +167,7 @@ public class PagePathService {
     }
 
     private boolean deletePathsForPagesInDirectory(String dirPath){
-        logger.info("Deleting all pages in directory {}", dirPath);
+        log.info("Deleting all pages in directory {}", dirPath);
         boolean deleted = false;
         List<String> pathsToDelete = new ArrayList<>();
         pagePaths.forEach((key, value) -> {
@@ -199,11 +199,11 @@ public class PagePathService {
                 pageDTO.setContentMD(Files.readString(Paths.get(file.getAbsolutePath())));
                 markdownPageLoadService.setPageMeta(pageDTO);
             } catch (IOException e) {
-                logger.info("Error while reading {} to update modified file", file.getAbsolutePath());
+                log.info("Error while reading {} to update modified file", file.getAbsolutePath());
                 e.printStackTrace();
                 return;
             } catch (ParseException e) {
-                logger.info("Error while parsing {} to load metadata for modified file", file.getAbsolutePath());
+                log.info("Error while parsing {} to load metadata for modified file", file.getAbsolutePath());
                 e.printStackTrace();
                 return;
             }

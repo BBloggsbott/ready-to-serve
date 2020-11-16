@@ -3,6 +3,7 @@ package com.bbloggsbott.readytoserve.media.service;
 import com.bbloggsbott.readytoserve.application.dto.SettingsDTO;
 import com.bbloggsbott.readytoserve.application.service.SettingsService;
 import com.bbloggsbott.readytoserve.media.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +21,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
+@Slf4j
 public class MediaService {
 
     @Autowired
     private SettingsService settingsService;
 
     private SettingsDTO settingsDTO;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final String PDF_EXTENSION = "pdf";
     private final String JSON_EXTENSION = "json";
@@ -48,20 +48,20 @@ public class MediaService {
     public byte[] getFileAsByteArray(String filename) throws IOException {
         File file = getFile(filename);
         if (!file.exists()){
-            logger.error("Resource {} not found", filename);
+            log.error("Resource {} not found", filename);
             throw new ResourceNotFoundException(filename);
         }
         try{
             return Files.readAllBytes(file.toPath());
         } catch (IOException ex) {
-            logger.error("Error while converting file {} to byte array", filename);
+            log.error("Error while converting file {} to byte array", filename);
             throw ex;
         }
     }
 
     private File getFile(String filename){
         String filepath = Paths.get(settingsDTO.getFilesDir(), filename).toString();
-        logger.info("Getting file from {}", filepath);
+        log.info("Getting file from {}", filepath);
         return new File(filepath);
     }
 
