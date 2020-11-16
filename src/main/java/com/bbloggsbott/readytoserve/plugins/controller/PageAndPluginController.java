@@ -36,7 +36,7 @@ public class PageAndPluginController {
 
     @RequestMapping("/**")
     public ResponseEntity getPage(HttpServletRequest request, @RequestParam Map<String, Object> requestParams, @RequestBody Map<String, Object> requestBody) throws ParseException, PageNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException, PluginRequestMethodNotAllowed {
-        log.info("Got {} request to {}, param: {}", request.getMethod(), request.getRequestURL(), requestParams);
+        log.info("Got {} request to {}, param: {}, body {}", request.getMethod(), request.getRequestURL(), requestParams, requestBody);
         Object response = pluginService.getResponse(request.getRequestURI(), requestParams, requestBody, request.getMethod());
         if (response != null){
             return new ResponseEntity<Object>(response, HttpStatus.OK);
