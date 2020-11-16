@@ -101,10 +101,19 @@ public class PluginService {
             PluginDTO plugin = (PluginDTO) map.get(PLUGIN_DTO_KEY);
             ArrayList<Object> params = new ArrayList<>();
             for (PluginArgDTO arg: plugin.getArgs()){
+                Class argClass = getClassFromName(arg.getType());
                 if (arg.getRequestParam()){
-                    params.add(mapper.readValue(requestParams.get(arg.getName()).toString(), getClassFromName(arg.getType())));
+                    if (argClass == String.class){
+                        params.add(requestParams.get(arg.getName()).toString());
+                    } else{
+                        params.add(mapper.readValue(requestParams.get(arg.getName()).toString(), argClass));
+                    }
                 } else {
-                    params.add(mapper.readValue(requestBody.get(arg.getName()).toString(), getClassFromName(arg.getType())));
+                    if (argClass == String.class) {
+                        params.add(requestBody.get(arg.getName()).toString());
+                    } else {
+                        params.add(mapper.readValue(requestBody.get(arg.getName()).toString(), argClass));
+                    }
                 }
             }
             Object result = method.invoke(loadedClass.getDeclaredConstructor().newInstance(), params.toArray());
