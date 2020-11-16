@@ -5,6 +5,7 @@ import com.bbloggsbott.readytoserve.application.util.ServerUtil;
 import com.bbloggsbott.readytoserve.pages.service.PagePathService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 @Service
+@Slf4j
 public class ServerInfoService {
 
     @Autowired
@@ -25,18 +27,16 @@ public class ServerInfoService {
     @Autowired
     private PagePathService pagePathService;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private ServerInfoDTO serverInfo;
 
     @PostConstruct
     private void init() throws IOException {
-        logger.info("Reading server info");
+        log.info("Reading server info");
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         String serverInfoFilename = settingsService.getSettings().getServerInfoFile();
         File serverInfoFile = new File(serverInfoFilename);
         if (!serverInfoFile.exists()){
-            logger.info("Server info file doesn't exist");
+            log.info("Server info file doesn't exist");
             throw new FileNotFoundException("Server Info file not found");
         }
         serverInfo = mapper.readValue(serverInfoFile, ServerInfoDTO.class);
@@ -45,7 +45,7 @@ public class ServerInfoService {
         }
         ServerUtil.prepareOnlineURLs(serverInfo);
         serverInfo.setRoutes(pagePathService.getBasePaths());
-        logger.info("Server info loading complete");
+        log.info("Server info loading complete");
     }
 
     public ServerInfoDTO getServerInfo(){

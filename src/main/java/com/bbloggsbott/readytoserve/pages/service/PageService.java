@@ -3,6 +3,7 @@ package com.bbloggsbott.readytoserve.pages.service;
 import com.bbloggsbott.readytoserve.application.service.SettingsService;
 import com.bbloggsbott.readytoserve.pages.dto.PageResponseDTO;
 import com.bbloggsbott.readytoserve.pages.exception.PageNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PageService {
 
     @Autowired
@@ -30,8 +32,6 @@ public class PageService {
 
     @Autowired
     private SettingsService settingsService;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @PostConstruct
     public void init(){
@@ -47,15 +47,15 @@ public class PageService {
     }
 
     public PageResponseDTO getPageResponse(String pageUrlPath) throws IOException, ParseException, PageNotFoundException {
-        logger.info("Got request for {}", pageUrlPath);
+        log.info("Got request for {}", pageUrlPath);
         PageResponseDTO pageResponseDTO = new PageResponseDTO();
         String cleanedUrl = StringUtils.strip(pageUrlPath, "/");
         if (pagePathService.getUrlDirectories().containsKey(cleanedUrl)){
-            logger.info("Found a url directory entry");
+            log.info("Found a url directory entry");
             pageResponseDTO.setPage(false);
             pageResponseDTO.setChildren(new ArrayList<>(pagePathService.getUrlDirectories().get(cleanedUrl)));
         } else if (pagePathService.getPagePaths().containsKey(cleanedUrl)){
-            logger.info("Found a page entry");
+            log.info("Found a page entry");
             pageResponseDTO.setPage(true);
             pageResponseDTO.setPageDTO(pagePathService.getPageDTOFromUrl(cleanedUrl));
         } else {
