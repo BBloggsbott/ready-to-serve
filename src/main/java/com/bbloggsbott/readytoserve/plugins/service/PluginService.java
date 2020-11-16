@@ -7,6 +7,7 @@ import com.bbloggsbott.readytoserve.plugins.dto.PluginsDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class PluginService {
 
     @Autowired
@@ -35,7 +37,6 @@ public class PluginService {
 
     private PluginsDTO plugins;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final ObjectMapper mapper = new ObjectMapper();
 
     private HashMap<String, HashMap<String, Object>> enpointPluginMapping;
@@ -117,8 +118,10 @@ public class PluginService {
                 }
             }
             Object result = method.invoke(loadedClass.getDeclaredConstructor().newInstance(), params.toArray());
+            log.info("Responding with {}", result);
             return result;
         }
+        log.info("Responding with null");
         return null;
     }
 

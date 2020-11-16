@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class PluginController {
+public class PageAndPluginController {
 
     @Autowired
     private PageService pageService;
@@ -34,7 +34,7 @@ public class PluginController {
 
     @GetMapping("/**")
     public ResponseEntity getPage(HttpServletRequest request, @RequestParam Map<String, Object> requestParams) throws ParseException, PageNotFoundException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        logger.info("{}", requestParams);
+        logger.info("Got request to {}, param: {}", request.getRequestURL(), requestParams);
         Object response = pluginService.getResponse(request.getRequestURI(), requestParams, new HashMap<>());
         if (response != null){
             return new ResponseEntity<Object>(response, HttpStatus.OK);

@@ -61,6 +61,7 @@ public class PageService {
         } else {
             throw new PageNotFoundException(pageUrlPath);
         }
+        log.info("Responding with {}", pageResponseDTO);
         return pageResponseDTO;
     }
 
