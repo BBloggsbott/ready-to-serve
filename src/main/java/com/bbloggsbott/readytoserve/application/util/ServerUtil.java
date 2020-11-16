@@ -1,7 +1,6 @@
 package com.bbloggsbott.readytoserve.application.util;
 
 import com.bbloggsbott.readytoserve.application.dto.ServerInfoDTO;
-import org.springframework.stereotype.Component;
 
 public class ServerUtil {
 
