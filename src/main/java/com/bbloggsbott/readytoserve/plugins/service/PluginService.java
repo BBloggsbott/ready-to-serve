@@ -115,11 +115,7 @@ public class PluginService {
                         params.add(mapper.readValue(requestParams.get(arg.getName()).toString(), argClass));
                     }
                 } else {
-                    if (argClass == String.class) {
-                        params.add(requestBody.get(arg.getName()).toString());
-                    } else {
-                        params.add(mapper.readValue(requestBody.get(arg.getName()).toString(), argClass));
-                    }
+                    params.add(mapper.readValue(requestBody.get(arg.getName()).toString(), argClass));
                 }
             }
             Object result = method.invoke(loadedClass.getDeclaredConstructor().newInstance(), params.toArray());
