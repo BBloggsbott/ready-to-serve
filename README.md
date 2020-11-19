@@ -35,7 +35,7 @@ Here is a sample plugin config:
       type: java.lang.String
       requestParam: false
 ```  
-The Jar files and the config file must be inside the `plugins_directory`.
+The Jar files and the config file must be inside the `plugins_directory`. You can find plugins in the plugin library [here](https://github.com/BBloggsbott/ready-to-serv-plugins).
 
 ### Plugin config arguments
 The plugin config file is a yaml file with a list of objects that provide the following information
