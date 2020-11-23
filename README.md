@@ -1,11 +1,11 @@
-# ready-to-serv
+# ready-to-serve
 
 A backend server for people who don't want to write backend code.
 
 Ready to Serve lets you set up a server with functionalities that you want by using plugins to offer those functionalities and map them to endpoints.
 
 ## Set up
-Download and run ready-to-serve.jar file and it will create the necessary files and directories for you during the first run. You can then customize where you keep the necessary data by editing the `settings.json` file. 
+Download and run readytoserve-1.0.0.jar file and it will create the necessary files and directories for you during the first run. You can then customize where you keep the necessary data by editing the `settings.json` file. 
 
 ## What are plugins?
 
@@ -35,7 +35,7 @@ Here is a sample plugin config:
       type: java.lang.String
       requestParam: false
 ```  
-The Jar files and the config file must be inside the `plugins_directory`. You can find plugins in the plugin library [here](https://github.com/BBloggsbott/ready-to-serv-plugins).
+The Jar files and the config file must be inside the `plugins_directory`. You can find plugins in the plugin library [here](https://github.com/BBloggsbott/ready-to-serve-plugins).
 
 ### Plugin config arguments
 The plugin config file is a yaml file with a list of objects that provide the following information

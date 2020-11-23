@@ -1,0 +1,3 @@
+# Contributing to Ready To Serve
+
+If you are interested in contributing to ready-to-serve, take a look at the [issues](https://github.com/BBloggsbott/ready-to-serve/issues) page and comment on an issue you are interested in working on. You can also contribute to an issue that has been assigned to someone. Once you are assigned to an issue, for the [repo](https://github.com/BBloggsbott/ready-to-serve), [fork](https://guides.github.com/activities/forking/) the repo, create a branch with a meaningful name and [reference the issue](https://help.github.com/en/github/writing-on-github/autolinked-references-and-urls#issues-and-pull-requests) in the first commit to the branch. Submit a PR when you feel you have made enough progress.
