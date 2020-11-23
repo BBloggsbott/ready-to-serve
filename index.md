@@ -1,7 +1,3 @@
-# Ready to Serve
-
-A backend server for people who don't want to write backend code.
-
 Ready to Serve lets you set up a server with functionalities that you want by using plugins to offer those functionalities and map them to endpoints.
 
 ## Set up
