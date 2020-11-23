@@ -6,8 +6,6 @@ import com.bbloggsbott.readytoserve.pages.service.PagePathService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +13,6 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
 
 @Service
 @Slf4j

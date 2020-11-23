@@ -27,6 +27,12 @@ public class SettingsDTO {
     @JsonProperty("server_image_size") // Works only with image from gravatar
     private String serverImageSize;
 
+    @JsonProperty("plugins_directory")
+    private String pluginsDirectory;
+
+    @JsonProperty("plugins_config_file")
+    private String pluginsConfigFile;
+
     @JsonProperty("files_directory")
     private String filesDir;
 
