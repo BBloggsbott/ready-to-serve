@@ -51,6 +51,7 @@ The plugin config file is a yaml file with a list of objects that provide the fo
  **Note**: Ready to Serve currently cannot load argument types from the Jar file. This enhancement will be added in future releases. 
  
  ## What else can Ready to Serve do?
+ 
  ### Serving static content
  Ready to serve can serve text as html and markdown using as Pages. This can be done by creating pages in the `pages_directory`. The syntax for a page is show below
 ```markdown
